@@ -1,0 +1,9 @@
+var config = {};
+
+{{ range $index, $service := service "%%%ROUTER_SERVICE%%%" }}{{if eq $index 0}}
+config.XBAR_URL = "%%%ROUTER_PROTOCOL%%%://{{.Address}}:{{.Port}}/ws";
+config.XBAR_REALM = "%%%ROUTER_REALM%%%";{{end}}{{end}}
+config.XBAR_USER = process.env.ROUTER_AUTH_USER;
+config.XBAR_SECRET = process.env.ROUTER_AUTH_SECRET;
+
+module.exports = config;

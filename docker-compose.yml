@@ -1,0 +1,50 @@
+service:
+  build: .
+  dns:
+    - 172.17.42.1
+  environment:
+    SERVICE_NAME: service
+    SERVICE_TAGS: test
+    ROUTER_REALM: main
+    ROUTER_AUTH_USER: user
+    ROUTER_AUTH_SECRET: secret
+    CONSUL_SERVER: consul.www.service.consul:8500
+
+router:
+  build: tests/router/.
+  ports:
+    - "172.17.42.1:8080:8080"
+  environment:
+    SERVICE_NAME: router
+    SERVICE_TAGS: app
+    ROUTER_AUTH_USER: user
+    ROUTER_AUTH_SECRET: secret
+
+script:
+  build: tests/script/.
+  environment:
+    ROUTER_REALM: main
+    ROUTER_URL: ws://172.17.42.1:8080/ws
+
+consul:
+  image: gliderlabs/consul:0.5
+  hostname: node1
+  ports:
+    - "8400:8400"
+    - "8500:8500"
+    - "172.17.42.1:53:8600/udp"
+  command: agent -server -bootstrap -data-dir /data/ -client 0.0.0.0
+  environment:
+    SERVICE_NAME: www
+    SERVICE_TAGS: consul
+
+registrator:
+  image: gliderlabs/registrator
+  volumes:
+    - "/var/run/docker.sock:/tmp/docker.sock"
+  command: -ip 172.17.42.1 consul://consul:8500
+  links:
+    - consul
+  environment:
+    SERVICE_NAME: registrator
+  restart: always

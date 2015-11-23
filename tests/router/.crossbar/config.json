@@ -1,0 +1,60 @@
+{
+   "controller": {
+   },
+   "workers": [
+      {
+         "type": "router",
+         "options": {
+            "pythonpath": [".."]
+         },
+         "realms": [
+            {
+               "name": "main",
+               "roles": [
+                  {
+                     "name": "protected",
+                     "permissions": [
+                        {
+                           "uri": "*",
+                           "publish": true,
+                           "subscribe": true,
+                           "call": true,
+                           "register": true
+                        }
+                     ]
+                  }
+               ]
+            }
+         ],
+         "transports": [
+            {
+               "type": "web",
+               "endpoint": {
+                  "type": "tcp",
+                  "port": 8080
+               },
+               "paths": {
+                  "/": {
+                     "type": "static",
+                     "directory": "/www"
+                  },
+                  "ws": {
+                     "type": "websocket",
+                     "auth": {
+                        "wampcra": {
+                           "type": "static",
+                           "users": {
+                              "user": {
+                                 "secret": "secret",
+                                 "role": "protected"
+                              }
+                           }
+                        }
+                     }
+                  }
+               }
+            }
+         ]
+      }
+   ]
+}

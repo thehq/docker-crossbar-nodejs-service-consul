@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Update the ROUTER config parameters
+sed -i -e "s/%%%ROUTER_SERVICE%%%/${ROUTER_SERVICE}/g" /etc/consul-templates/config.js.tmpl
+sed -i -e "s/%%%ROUTER_REALM%%%/${ROUTER_REALM}/g" /etc/consul-templates/config.js.tmpl
+sed -i -e "s/%%%ROUTER_PROTOCOL%%%/${ROUTER_PROTOCOL}/g" /etc/consul-templates/config.js.tmpl
+sed -i -e "s/%%%SERVICE_ENTRY%%%/${SERVICE_ENTRY}/g" /etc/consul-templates/config.js.tmpl
+
+cat /etc/consul-templates/config.js.tmpl
+
+exec consul-template \
+  -consul=$CONSUL_SERVER \
+  -template "/etc/consul-templates/config.js.tmpl:/app/src/config.js:cat /app/src/config.js; sv restart connect";
