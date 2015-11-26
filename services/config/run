@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Race condition where this service starts as connect one does
+sleep 2
+
 # Update the ROUTER config parameters
 sed -i -e "s/%%%ROUTER_SERVICE%%%/${ROUTER_SERVICE}/g" /etc/consul-templates/config.js.tmpl
 sed -i -e "s/%%%ROUTER_REALM%%%/${ROUTER_REALM}/g" /etc/consul-templates/config.js.tmpl
