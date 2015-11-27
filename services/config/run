@@ -1,6 +1,8 @@
 #!/bin/bash
 
-# Race condition where this service starts as connect one does
+# Race condition where this service starts first and triggers a restart of the conenct service
+# while the connect service is starting.  This code will ensure the connect service is run first
+sv start connect || exit 1
 sleep 2
 
 # Update the ROUTER config parameters
