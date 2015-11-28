@@ -1,7 +1,7 @@
 service:
   build: .
   dns:
-    - 172.17.42.1
+    - 172.17.0.1
   environment:
     SERVICE_NAME: service
     SERVICE_TAGS: test
@@ -13,7 +13,7 @@ service:
 router:
   build: tests/router/.
   ports:
-    - "172.17.42.1:8080:8080"
+    - "172.17.0.1:8080:8080"
   environment:
     SERVICE_NAME: router
     SERVICE_TAGS: app
@@ -24,7 +24,7 @@ script:
   build: tests/script/.
   environment:
     ROUTER_REALM: main
-    ROUTER_URL: ws://172.17.42.1:8080/ws
+    ROUTER_URL: ws://172.17.0.1:8080/ws
 
 consul:
   image: gliderlabs/consul:0.5
@@ -32,7 +32,7 @@ consul:
   ports:
     - "8400:8400"
     - "8500:8500"
-    - "172.17.42.1:53:8600/udp"
+    - "172.17.0.1:53:8600/udp"
   command: agent -server -bootstrap -data-dir /data/ -client 0.0.0.0
   environment:
     SERVICE_NAME: www
@@ -42,7 +42,7 @@ registrator:
   image: gliderlabs/registrator
   volumes:
     - "/var/run/docker.sock:/tmp/docker.sock"
-  command: -ip 172.17.42.1 consul://consul:8500
+  command: -ip 172.17.0.1 consul://consul:8500
   links:
     - consul
   environment:

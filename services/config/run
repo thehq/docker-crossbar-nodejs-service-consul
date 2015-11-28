@@ -13,6 +13,8 @@ sed -i -e "s/%%%SERVICE_ENTRY%%%/${SERVICE_ENTRY}/g" /etc/consul-templates/confi
 
 cat /etc/consul-templates/config.js.tmpl
 
+# Node is dynamically checking the router config.  No need to restart the service.  It will auto pick it up when then
+# config file is updated.
 exec consul-template \
   -consul=$CONSUL_SERVER \
-  -template "/etc/consul-templates/config.js.tmpl:/app/src/config.js:cat /app/src/config.js; sv restart connect";
+  -template "/etc/consul-templates/config.js.tmpl:/app/src/config.js:cat /app/src/config.js";
