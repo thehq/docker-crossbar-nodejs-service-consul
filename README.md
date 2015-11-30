@@ -14,7 +14,8 @@ To use this image, do the following
      -> middleware.js
      -> etc.
      
-Do not overwrite "crossbar.js".  This handles the dynamic connectivity to the router.
+Do not overwrite "crossbar.js".  This handles the dynamic connectivity to the router.  If you need to run locally, copy
+"crossbar.js" and "config.json".  Just do not modify since the dynamic aspect may stop working.
 
 ### Dockerfile
 

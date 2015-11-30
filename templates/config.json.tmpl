@@ -1,0 +1,5 @@
+{{ range $index, $service := service "%%%ROUTER_SERVICE%%%" }}{{if eq $index 0}}{
+  "url": "%%%ROUTER_PROTOCOL%%%://{{.Address}}:{{.Port}}/ws",
+  "realm": "%%%ROUTER_REALM%%%"
+}{{end}}{{end}}
+

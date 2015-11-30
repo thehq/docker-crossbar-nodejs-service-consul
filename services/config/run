@@ -3,18 +3,14 @@
 # Race condition where this service starts first and triggers a restart of the conenct service
 # while the connect service is starting.  This code will ensure the connect service is run first
 sv start connect || exit 1
-sleep 2
 
 # Update the ROUTER config parameters
-sed -i -e "s/%%%ROUTER_SERVICE%%%/${ROUTER_SERVICE}/g" /etc/consul-templates/config.js.tmpl
-sed -i -e "s/%%%ROUTER_REALM%%%/${ROUTER_REALM}/g" /etc/consul-templates/config.js.tmpl
-sed -i -e "s/%%%ROUTER_PROTOCOL%%%/${ROUTER_PROTOCOL}/g" /etc/consul-templates/config.js.tmpl
-sed -i -e "s/%%%SERVICE_ENTRY%%%/${SERVICE_ENTRY}/g" /etc/consul-templates/config.js.tmpl
+sed -i -e "s/%%%ROUTER_SERVICE%%%/${ROUTER_SERVICE}/g" /etc/consul-templates/config.json.tmpl
+sed -i -e "s/%%%ROUTER_REALM%%%/${ROUTER_REALM}/g" /etc/consul-templates/config.json.tmpl
+sed -i -e "s/%%%ROUTER_PROTOCOL%%%/${ROUTER_PROTOCOL}/g" /etc/consul-templates/config.json.tmpl
 
 cat /etc/consul-templates/config.js.tmpl
 
-# Node is dynamically checking the router config.  No need to restart the service.  It will auto pick it up when then
-# config file is updated.
 exec consul-template \
   -consul=$CONSUL_SERVER \
-  -template "/etc/consul-templates/config.js.tmpl:/app/src/config.js:cat /app/src/config.js";
+  -template "/etc/consul-templates/config.json.tmpl:/app/src/config.json: cat /app/src/config.json"

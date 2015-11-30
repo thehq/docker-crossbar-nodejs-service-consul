@@ -4,7 +4,7 @@ function test_example(args, kwargs) {
     return true;
 }
 
-crossbar.connect(function(connected) {
+function main(connected) {
     if (connected == true) {
 
         // Create a test session
@@ -17,4 +17,6 @@ crossbar.connect(function(connected) {
             }
         );
     }
-});
+}
+
+crossbar.connect(main);
