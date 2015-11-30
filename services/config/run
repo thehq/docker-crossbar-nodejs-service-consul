@@ -9,7 +9,7 @@ sed -i -e "s/%%%ROUTER_SERVICE%%%/${ROUTER_SERVICE}/g" /etc/consul-templates/con
 sed -i -e "s/%%%ROUTER_REALM%%%/${ROUTER_REALM}/g" /etc/consul-templates/config.json.tmpl
 sed -i -e "s/%%%ROUTER_PROTOCOL%%%/${ROUTER_PROTOCOL}/g" /etc/consul-templates/config.json.tmpl
 
-cat /etc/consul-templates/config.js.tmpl
+cat /etc/consul-templates/config.json.tmpl
 
 exec consul-template \
   -consul=$CONSUL_SERVER \
