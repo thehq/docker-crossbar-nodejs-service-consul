@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# Race condition where this service starts first and triggers a restart of the conenct service
-# while the connect service is starting.  This code will ensure the connect service is run first
-sv start connect || exit 1
-
 # Update the ROUTER config parameters
 sed -i -e "s/%%%ROUTER_SERVICE%%%/${ROUTER_SERVICE}/g" /etc/consul-templates/config.json.tmpl
 sed -i -e "s/%%%ROUTER_REALM%%%/${ROUTER_REALM}/g" /etc/consul-templates/config.json.tmpl
@@ -13,4 +9,4 @@ cat /etc/consul-templates/config.json.tmpl
 
 exec consul-template \
   -consul=$CONSUL_SERVER \
-  -template "/etc/consul-templates/config.json.tmpl:/app/src/config.json: cat /app/src/config.json"
+  -template "/etc/consul-templates/config.json.tmpl:/app/src/config.json: cat /app/src/config.json; sv restart connect"

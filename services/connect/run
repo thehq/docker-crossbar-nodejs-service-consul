@@ -1,4 +1,4 @@
 #!/bin/bash
 
 cd /app/src/
-node $SERVICE_ENTRY
+exec node $SERVICE_ENTRY
