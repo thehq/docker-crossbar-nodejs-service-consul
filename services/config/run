@@ -9,5 +9,5 @@ cat /etc/consul-templates/config.json.tmpl
 
 exec consul-template \
   -consul=$CONSUL_SERVER \
-  -retry 1 \
+  -retry=1s \
   -template "/etc/consul-templates/config.json.tmpl:/app/src/config.json: cat /app/src/config.json; sv restart connect"
